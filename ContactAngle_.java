@@ -135,6 +135,7 @@ public static final int MOVE_CROSS = 1;
 public static final int REMOVE_CROSS = 2;
 public static final int FILE = 3;
 public static final int TERMINATE = 4;
+public static final int BOTH_BEST = 6;
 public static final int MAGNIFIER = 11;
 
 /*....................................................................
@@ -382,7 +383,7 @@ public caAct (
 	Private methods
 ....................................................................*/
 
-/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------ */
 private String getValueAsString (
 	final int x,
 	final int y
@@ -390,8 +391,8 @@ private String getValueAsString (
 	final Calibration cal = imp.getCalibration();
 	final int[] v = imp.getPixel(x, y);
 	switch (imp.getType()) {
-		case imp.GRAY8:
-		case imp.GRAY16:
+		case ImagePlus.GRAY8:
+		case ImagePlus.GRAY16:
 			final double cValue = cal.getCValue(v[0]);
 			if (cValue==v[0]) {
 				return(", value=" + v[0]);
@@ -399,16 +400,17 @@ private String getValueAsString (
 			else {
 				return(", value=" + IJ.d2s(cValue) + " (" + v[0] + ")");
 			}
-		case imp.GRAY32:
+		case ImagePlus.GRAY32:
 			return(", value=" + Float.intBitsToFloat(v[0]));
-		case imp.COLOR_256:
+		case ImagePlus.COLOR_256:
 			return(", index=" + v[3] + ", value=" + v[0] + "," + v[1] + "," + v[2]);
-		case imp.COLOR_RGB:
+		case ImagePlus.COLOR_RGB:
 			return(", value=" + v[0] + "," + v[1] + "," + v[2]);
 		default:
 			return("");
 	}
-} /* end getValueAsString */
+	
+}  /* end getValueAsString */
 
 /*------------------------------------------------------------------*/
 private void setControl (
@@ -422,6 +424,7 @@ private void setControl (
 		case MOVE_CROSS:
 		case REMOVE_CROSS:
 			imp.getWindow().getCanvas().setCursor(defaultCursor);
+		default:
 			break;
 	}
 } /* end setControl */
@@ -2210,8 +2213,8 @@ if (this.checkP2) {
 		}
 	IJ.run("Find Edges");
 	caSetThreshold ThresholdDialog = new caSetThreshold(IJ.getInstance());
-	GUI.center(ThresholdDialog);
-	ThresholdDialog.setVisible(true);
+	ThresholdDialog.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "OK"));
+	//ThresholdDialog.setVisible(true);
 	ThresholdDialog.dispose();
 
 		Point p1 = (Point) list.elementAt(0);
@@ -2503,7 +2506,7 @@ if (this.checkP2) {
 	int yb1i = (int)yb1;
 	int xb2i = (int)xb2;
 	int yb2i = (int)yb2;
-	IJ.run("Revert");
+	//IJ.run("Revert");
 	IJ.run("Line Width...", "line=2");
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
 	IJ.run("Draw");
@@ -3490,91 +3493,6 @@ caFile (
 
 } /* end class caFile */
 
-/*====================================================================
-|	caTerminate
-\===================================================================*/
-
-/*********************************************************************
- * This class creates a dialog to return to ImageJ.
- ********************************************************************/
-class caTerminate
-	extends
-		Dialog
-	implements
-		ActionListener
-
-{ /* begin class caTerminate */
-
-/*....................................................................
-	Private variables
-....................................................................*/
-private final CheckboxGroup choice = new CheckboxGroup();
-private boolean cancel = false;
-
-/*....................................................................
-	Public methods
-....................................................................*/
-
-/*********************************************************************
- * This method processes the button actions.
- *
- * @param ae The expected actions are as follows:
- * <ul><li><code>Done</code>: Return to ImageJ;</li>
- * <li><code>Cancel</code>: Do nothing.</li></ul>
- ********************************************************************/
-public void actionPerformed (
-	final ActionEvent ae
-) {
-	this.setVisible(false);
-	if (ae.getActionCommand().equals("Done")) {
-	}
-	else if (ae.getActionCommand().equals("Cancel")) {
-		cancel = true;
-	}
-} /* end actionPerformed */
-
-/*********************************************************************
- * Return <code>true</code> only if the user chose <code>Cancel</code>.
- ********************************************************************/
-public boolean choseCancel (
-) {
-	return(cancel);
-} /* end choseCancel */
-
-/*********************************************************************
- * Return some additional margin to the dialog, for aesthetic purposes.
- * Necessary for the current MacOS X Java version, lest the first item
- * disappears from the frame.
- ********************************************************************/
-public Insets getInsets (
-) {
-	return(new Insets(0, 40, 20, 40));
-} /* end getInsets */
-
-/*********************************************************************
- * This constructor prepares the layout of the dialog.
- *
- * @param parentWindow Parent window.
- ********************************************************************/
-caTerminate (
-	final Frame parentWindow
-) {
-	super(parentWindow, "Back to ImageJ", true);
-	setLayout(new GridLayout(0, 1));
-	final Button doneButton = new Button("Done");
-	final Button cancelButton = new Button("Cancel");
-	doneButton.addActionListener(this);
-	cancelButton.addActionListener(this);
-	final Label separation1 = new Label("");
-	final Label separation2 = new Label("");
-	add(separation1);
-	add(doneButton);
-	add(separation2);
-	add(cancelButton);
-	pack();
-} /* end caTerminate */
-
-} /* end class caTerminate */
 
 /*====================================================================
 |	caToolbar
@@ -3704,23 +3622,17 @@ public void mousePressed (
 				= new caFile(IJ.getInstance(), ph, imp);
 			GUI.center(fileDialog);
 			fileDialog.setVisible(true);
-			setTool(previousTool);
+			
 			fileDialog.dispose();
 			break;
+		case caAct.BOTH_BEST:
+			new caFile(IJ.getInstance(), ph, imp).actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Both Bestfits"));
+			setTool(previousTool);
+			//break; //fall through and terminate
 		case caAct.TERMINATE:
-			caTerminate terminateDialog
-				= new caTerminate(IJ.getInstance());
-			GUI.center(terminateDialog);
-			terminateDialog.setVisible(true);
-			if (terminateDialog.choseCancel()) {
-				setTool(previousTool);
-			}
-			else {
-				ph.cleanUp();
-				restorePreviousToolbar();
-				Toolbar.getInstance().repaint();
-			}
-			terminateDialog.dispose();
+			ph.cleanUp();
+			restorePreviousToolbar();
+			Toolbar.getInstance().repaint();
 			break;
 	}
 } /* mousePressed */
@@ -3969,6 +3881,18 @@ private void drawButton (
 			m(5, 12);
 			d(10, 12);
 			break;
+		case caAct.BOTH_BEST:
+			xOffset = x;
+			yOffset = y;
+			m(3, 1);
+			d(9, 1);
+			d(9, 4);
+			d(12, 4);
+			d(12, 14);
+			d(3, 14);
+			d(3, 1);
+			
+			break;
 		case caAct.TERMINATE:
 			xOffset = x;
 			yOffset = y;
@@ -4108,6 +4032,9 @@ private void showMessage (
 			return;
 		case caAct.TERMINATE:
 			IJ.showStatus("Exit PointPicker");
+			return;
+		case caAct.BOTH_BEST:
+			IJ.showStatus("Run Both BestFit");
 			return;
 		case caAct.MAGNIFIER:
 			IJ.showStatus("Magnifying glass");
