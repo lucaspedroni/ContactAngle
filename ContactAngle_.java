@@ -104,7 +104,7 @@ public void run (
 	final caToolbar tb = new caToolbar(Toolbar.getInstance());
 	final caHandler ph = new caHandler(imp, tb);
 	tb.setWindow(ph, imp);	
-	IJ.run("8-bit");
+	IJ.run("8-bit","slice");
 } /* end run */
 } /* end class ContactAngle*/
 
@@ -1059,7 +1059,7 @@ private TextField upperT_Text;
 			double lowerT = Double.valueOf(lowerT_Text.getText()).doubleValue();
 			double upperT = Double.valueOf(upperT_Text.getText()).doubleValue();
 			IJ.setThreshold(lowerT, upperT);
-			IJ.run("Threshold");
+			IJ.run("Threshold","slice");
 			setVisible(false);
 		}
 		else if (ae.getActionCommand().equals("Cancel")) {
@@ -1461,7 +1461,7 @@ final Frame f = new Frame();
 		IJ.error("choose ONLY THE BASE LINE USING 2 POINTS and 3 FOR THE CIRCLE");
 		return;
 	}
-	IJ.run("Find Edges");
+	IJ.run("Find Edges", "slice");
 	caSetThreshold ThresholdDialog = new caSetThreshold(IJ.getInstance());
 	GUI.center(ThresholdDialog);
 	ThresholdDialog.setVisible(true);
@@ -1677,10 +1677,10 @@ if (this.checkP2) {
 		int yb1i = (int)yb1;
 		int xb2i = (int)xb2;
 		int yb2i = (int)yb2;
-		IJ.run("Revert");
+		//IJ.run("Revert");
 		IJ.run("Line Width...", "line=3");
 		IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 		double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 
 /* calcolo culmine: distanza centro - base + raggio punto centrale*/
@@ -1712,8 +1712,8 @@ if (this.checkP2) {
                 rt.addValue("Points:", npfinale);
 		rt.addValue("Volume", Math.rint(volume*100)/100);
 		rt.addValue("Area Sup", Math.rint(area*100)/100);
-//		rt.addValue("Base", Math.rint(wt*100)/100);
-//		rt.addValue("Height", Math.rint(ht*100)/100);
+		rt.addValue("Base", Math.rint(wt*100)/100);
+		rt.addValue("Height", Math.rint(ht*100)/100);
 		a.displayResults();
 		a.updateHeadings();
 		
@@ -1723,7 +1723,7 @@ if (this.checkP2) {
 		IJ.run("Line Width...", "line=3");
 
 		IJ.makeOval((int)(ovalxb), (int)(ovalyb), (int)(2*rag), (int)(2*rag));
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 		}
 		
 
@@ -1737,7 +1737,7 @@ if (this.checkP2) {
         IJ.error("choose ONLY THE BASE LINE USING 2 POINTS and 3 FOR THE DROP EDGE");
 			return;
 		}
-	IJ.run("Find Edges");
+	IJ.run("Find Edges","slice");
 	caSetThreshold ThresholdDialog = new caSetThreshold(IJ.getInstance());
 	GUI.center(ThresholdDialog);
 	ThresholdDialog.setVisible(true);
@@ -2031,10 +2031,10 @@ if (this.checkP2) {
 	int yb1i = (int)yb1;
 	int xb2i = (int)xb2;
 	int yb2i = (int)yb2;
-	IJ.run("Revert");
+	//IJ.run("Revert");
 	IJ.run("Line Width...", "line=2");
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 	
 //	Calcolo tangenze nei punti di intersezione y = mtg x + qtg ; 
@@ -2078,9 +2078,9 @@ if (this.checkP2) {
                 xb4i = (int)(-qtg1/mtg1);
 	}
      	IJ.makeLine(xb3i, yb3i, xb4i, yb4i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	IJ.makeLine(xb5i, yb5i, xb6i, yb6i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 //	IJ.write("coefficienti tg1 =" + mtg1 + " " + qtg1);
 //	IJ.write("coefficienti tg2 =" + mtg2 + " " + qtg2);
         double thetal = Math.rint((Math.atan(mtg2)*1800/Math.PI))/10;
@@ -2150,7 +2150,7 @@ if (this.checkP2) {
 		}
 		PolygonRoi proi = new PolygonRoi(xPoints, yPoints,NUMPOLY,Roi.TRACED_ROI);
 		imp.setRoi(proi);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 //Intersezione con l'asse maggiore ed asse minore
 	 	c1 = acoef + (bcoef*masse1) + ccoef*Math.pow(masse1,2);
 		c2 = (bcoef*qasse1) + (2*ccoef*masse1*qasse1) + dcoef + (ecoef*masse1);
@@ -2174,7 +2174,7 @@ if (this.checkP2) {
 			xb2i = (int)(-qasse1/masse1);
 		}
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	
 	 	c1 = acoef + (bcoef*masse2) + ccoef*Math.pow(masse2,2);
 		c2 = (bcoef*qasse2) + (2*ccoef*masse2*qasse2) + dcoef + (ecoef*masse2);
@@ -2198,7 +2198,7 @@ if (this.checkP2) {
 			xb2i = (int)(-qasse2/masse2);
 		}
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");	
+	IJ.run("Draw","slice");	
 		}
 
 /*********************************************************************
@@ -2211,7 +2211,7 @@ if (this.checkP2) {
         IJ.error("choose ONLY THE BASE LINE USING 2 POINTS and 3 FOR THE DROP EDGE");
 			return;
 		}
-	IJ.run("Find Edges");
+	IJ.run("Find Edges","slice");
 	caSetThreshold ThresholdDialog = new caSetThreshold(IJ.getInstance());
 	ThresholdDialog.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "OK"));
 	//ThresholdDialog.setVisible(true);
@@ -2509,7 +2509,7 @@ if (this.checkP2) {
 	//IJ.run("Revert");
 	IJ.run("Line Width...", "line=2");
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 //	double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 	
 //	Calcolo tangenze nei punti di intersezione y = mtg x + qtg ; 
@@ -2553,9 +2553,9 @@ if (this.checkP2) {
                 xb4i = (int)(-qtg1/mtg1);
 	}
      	IJ.makeLine(xb3i, yb3i, xb4i, yb4i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	IJ.makeLine(xb5i, yb5i, xb6i, yb6i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 //	IJ.write("coefficienti tg1 =" + mtg1 + " " + qtg1);
 //	IJ.write("coefficienti tg2 =" + mtg2 + " " + qtg2);
         double thetal = Math.rint((Math.atan(mtg2)*1800/Math.PI))/10;
@@ -2609,7 +2609,7 @@ if (this.checkP2) {
 		PolygonRoi proi = new PolygonRoi(xPoints, yPoints,NUMPOLY,Roi.TRACED_ROI);
 		//proi.fitSpline(NUMSPLINE);
 		imp.setRoi(proi);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 //Intersezione con l'asse maggiore ed asse minore
 	 	c1 = acoef + (bcoef*masse1) + ccoef*Math.pow(masse1,2);
 		c2 = (bcoef*qasse1) + (2*ccoef*masse1*qasse1) + dcoef + (ecoef*masse1);
@@ -2633,7 +2633,7 @@ if (this.checkP2) {
 			xb2i = (int)(-qasse1/masse1);
 		}
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	
 	 	c1 = acoef + (bcoef*masse2) + ccoef*Math.pow(masse2,2);
 		c2 = (bcoef*qasse2) + (2*ccoef*masse2*qasse2) + dcoef + (ecoef*masse2);
@@ -2657,7 +2657,7 @@ if (this.checkP2) {
 			xb2i = (int)(-qasse2/masse2);
 		}
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 
 //inizio curcle best fit: a,b centro supposto
        final Vector fi = new Vector(0, 16);
@@ -2762,7 +2762,7 @@ if (this.checkP2) {
 		yb2i = (int)yb2;
 
 		IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 		double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 
 /* calcolo culmine: distanza centro - base + raggio punto centrale*/
@@ -2800,9 +2800,9 @@ if (this.checkP2) {
                 rt.addValue("Iterations:", naf); */
                 rt.addValue("Points:", npfinale);
 		rt.addValue("Volume", Math.rint(volume*100)/100);
-//		rt.addValue("Area Sup", Math.rint(area*100)/100);
-//		rt.addValue("Base", Math.rint(wt*100)/100);
-//		rt.addValue("Height", Math.rint(ht*100)/100);
+		rt.addValue("Area Sup", Math.rint(area*100)/100);
+		rt.addValue("Base", Math.rint(wt*100)/100);
+		rt.addValue("Height", Math.rint(ht*100)/100);
 		a.displayResults();
 		a.updateHeadings();
 		
@@ -2812,7 +2812,7 @@ if (this.checkP2) {
 		IJ.run("Line Width...", "line=3");
 
 		IJ.makeOval((int)(ovalxb), (int)(ovalyb), (int)(2*rag), (int)(2*rag));
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 	
 		}
 
@@ -2887,7 +2887,7 @@ if (this.checkP2) {
 
 		IJ.run("Line Width...", "line=3");
 		IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 		double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 
 /* calcolo culmine: distanza centro - base + raggio punto centrale*/
@@ -2920,7 +2920,7 @@ if (this.checkP2) {
 		double ovalyb = (Xc.get(1,0) - ragc);
 		IJ.run("Line Width...", "line=3");
 		IJ.makeOval((int)(ovalxb), (int)(ovalyb), (int)(2*ragc), (int)(2*ragc));
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 	}
 else {
 	
@@ -3117,10 +3117,10 @@ if (dropred.size() >= 5)  {
 	yb1i = (int)yb1;
 	xb2i = (int)xb2;
 	yb2i = (int)yb2;
-	IJ.run("Revert");
+//	IJ.run("Revert");
 	IJ.run("Line Width...", "line=2");
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 //	double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 	
 //	Calcolo tangenze nei punti di intersezione y = mtg x + qtg ; 
@@ -3164,9 +3164,9 @@ if (dropred.size() >= 5)  {
                 xb4i = (int)(-qtg1/mtg1);
 	}
      	IJ.makeLine(xb3i, yb3i, xb4i, yb4i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	IJ.makeLine(xb5i, yb5i, xb6i, yb6i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 //	IJ.write("coefficienti tg1 =" + mtg1 + " " + qtg1);
 //	IJ.write("coefficienti tg2 =" + mtg2 + " " + qtg2);
         double thetal = Math.rint((Math.atan(mtg2)*1800/Math.PI))/10;
@@ -3219,7 +3219,7 @@ if (dropred.size() >= 5)  {
 		PolygonRoi proi = new PolygonRoi(xPoints, yPoints,NUMPOLY,Roi.TRACED_ROI);
 		//proi.fitSpline(NUMSPLINE);
 		imp.setRoi(proi);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 //Intersezione con l'asse maggiore ed asse minore
 	 	c1 = acoef + (bcoef*masse1) + ccoef*Math.pow(masse1,2);
 		c2 = (bcoef*qasse1) + (2*ccoef*masse1*qasse1) + dcoef + (ecoef*masse1);
@@ -3243,7 +3243,7 @@ if (dropred.size() >= 5)  {
 			xb2i = (int)(-qasse1/masse1);
 		}
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 	
 	 	c1 = acoef + (bcoef*masse2) + ccoef*Math.pow(masse2,2);
 		c2 = (bcoef*qasse2) + (2*ccoef*masse2*qasse2) + dcoef + (ecoef*masse2);
@@ -3267,7 +3267,7 @@ if (dropred.size() >= 5)  {
 			xb2i = (int)(-qasse2/masse2);
 		}
 	IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-	IJ.run("Draw");
+	IJ.run("Draw","slice");
 }
 //inizio curcle best fit: a,b centro supposto
        final Vector fi = new Vector(0, 16);
@@ -3372,7 +3372,7 @@ if (dropred.size() >= 5)  {
 		yb2i = (int)yb2;
 
 		IJ.makeLine(xb1i, yb1i, xb2i, yb2i);
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 		double wt = Math.sqrt((xb2-xb1)*(xb2-xb1) + (yb2-yb1)*(yb2-yb1));
 
 /* calcolo culmine: distanza centro - base + raggio punto centrale*/
@@ -3410,9 +3410,9 @@ if (dropred.size() >= 5)  {
                 rt.addValue("Iterations:", naf); */
                 rt.addValue("Points:", npfinale);
 		rt.addValue("Volume", Math.rint(volume*100)/100);
-//		rt.addValue("Area Sup", Math.rint(area*100)/100);
-//		rt.addValue("Base", Math.rint(wt*100)/100);
-//		rt.addValue("Height", Math.rint(ht*100)/100);
+		rt.addValue("Area Sup", Math.rint(area*100)/100);
+		rt.addValue("Base", Math.rint(wt*100)/100);
+		rt.addValue("Height", Math.rint(ht*100)/100);
 		a.displayResults();
 		a.updateHeadings();
 		
@@ -3422,7 +3422,7 @@ if (dropred.size() >= 5)  {
 		IJ.run("Line Width...", "line=3");
 
 		IJ.makeOval((int)(ovalxb), (int)(ovalyb), (int)(2*rag), (int)(2*rag));
-		IJ.run("Draw");
+		IJ.run("Draw","slice");
 		
 	}
 	}
