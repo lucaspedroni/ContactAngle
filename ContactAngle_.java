@@ -104,7 +104,7 @@ public void run (
 	final caToolbar tb = new caToolbar(Toolbar.getInstance());
 	final caHandler ph = new caHandler(imp, tb);
 	tb.setWindow(ph, imp);	
-	IJ.run("8-bit","slice");
+	//IJ.run("8-bit","slice");
 } /* end run */
 } /* end class ContactAngle*/
 
@@ -1059,7 +1059,8 @@ private TextField upperT_Text;
 			double lowerT = Double.valueOf(lowerT_Text.getText()).doubleValue();
 			double upperT = Double.valueOf(upperT_Text.getText()).doubleValue();
 			IJ.setThreshold(lowerT, upperT);
-			IJ.run("Threshold","slice");
+			//IJ.run("Threshold","slice");
+			IJ.run("Convert to Mask", "slice");
 			setVisible(false);
 		}
 		else if (ae.getActionCommand().equals("Cancel")) {
