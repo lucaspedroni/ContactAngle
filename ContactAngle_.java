@@ -169,6 +169,7 @@ public boolean isFrontmost (
  * <li><code>KeyEvent.VK_RIGHT</code>: move the current landmark to the right;</li>
  * <li><code>KeyEvent.VK_TAB</code>: activate the next landmark;</li>
  * <li><code>KeyEvent.VK_UP</code>: move up the current landmark.</li></ul>
+ * <li><code>KeyEvent.VK_SEMICOLON</code>: run bothbest and exit.</li></ul>
  ********************************************************************/
 public void keyPressed (
 	final KeyEvent e
@@ -208,6 +209,12 @@ public void keyPressed (
 			ph.movePoint(imp.getWindow().getCanvas().screenX(x),
 				imp.getWindow().getCanvas().screenY(y
 				- (int)Math.ceil(1.0 / imp.getWindow().getCanvas().getMagnification())));
+			break;
+		case KeyEvent.VK_SEMICOLON:
+			new caFile(IJ.getInstance(), ph, imp).actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Both Bestfits"));
+			ph.cleanUp();
+			tb.restorePreviousToolbar();
+			Toolbar.getInstance().repaint();
 			break;
 	}
 	imp.setRoi(ph);
@@ -4000,7 +4007,7 @@ private void resetButtons (
 } /* end resetButtons */
 
 /*------------------------------------------------------------------*/
-private void restorePreviousToolbar (
+public void restorePreviousToolbar (
 ) {
 	final Container container = instance.getParent();
 	final Component component[] = container.getComponents();
