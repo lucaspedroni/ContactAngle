@@ -1710,6 +1710,7 @@ if (this.checkP2) {
 		a.saveResults(stats, roi); // store in system results table
 		ResultsTable rt =Analyzer.getResultsTable(); // get the system results table
 		rt.addLabel("File Name", imgFileName);	
+		rt.addValue("Frame", imp.getCurrentSlice());
 		rt.addValue("Theta", (Math.rint(thetac*1800/Math.PI)/10));
 		rt.addValue("Uncertainty", (Math.rint(error*1800/Math.PI)/10));
 		rt.addValue("Circle StDev", stdev);
@@ -2126,7 +2127,8 @@ if (this.checkP2) {
 		ImageStatistics stats = imp.getStatistics(Analyzer.getMeasurements());
 		a.saveResults(stats, roi); // store in system results table
 		ResultsTable rt =Analyzer.getResultsTable(); // get the system results table
-		rt.addLabel("File Name", imgFileName);	
+		rt.addLabel("File Name", imgFileName);
+		rt.addValue("Frame", imp.getCurrentSlice());
 		rt.addValue("Theta Left", ((Math.rint(thetalgradi*10))/10));
 		rt.addValue("Theta Right", ((Math.rint(thetargradi*10))/10));
 		rt.addValue("Theta", (Math.rint(thetaaverage*10))/10);
@@ -2792,6 +2794,7 @@ if (this.checkP2) {
 		a.saveResults(stats, roi); // store in system results table
 		ResultsTable rt =Analyzer.getResultsTable(); // get the system results table
 		rt.addLabel("File Name", imgFileName);	
+		rt.addValue("Frame", imp.getCurrentSlice());
 		rt.addValue("Theta C", (Math.rint(thetac*1800/Math.PI)/10));
 		rt.addValue("Uncertainty", (Math.rint(error*1800/Math.PI)/10));
 		
@@ -2912,7 +2915,8 @@ if (this.checkP2) {
 		ImageStatistics stats = imp.getStatistics(Analyzer.getMeasurements());
 		a.saveResults(stats, roi); // store in system results table
 		ResultsTable rt =Analyzer.getResultsTable(); // get the system results table
-		rt.addLabel("File Name", imgFileName);		
+		rt.addLabel("File Name", imgFileName);	
+		rt.addValue("Frame", imp.getCurrentSlice());	
 		rt.addValue("Theta", (Math.rint(thetac*1800/Math.PI)/10));
 		rt.addValue("Radius", Math.rint(ragc*100)/100);
                 rt.addValue("X Centre:", Math.rint(Xc.get(0,0)));
@@ -3402,6 +3406,7 @@ if (dropred.size() >= 5)  {
 		a.saveResults(stats, roi); // store in system results table
 		ResultsTable rt =Analyzer.getResultsTable(); // get the system results table
 		rt.addLabel("File Name", imgFileName);	
+		rt.addValue("Frame", imp.getCurrentSlice());
 		rt.addValue("Theta C", (Math.rint(thetac*1800/Math.PI)/10));
 		rt.addValue("Uncertainty", (Math.rint(error*1800/Math.PI)/10));
 		
